@@ -7,15 +7,23 @@ public class Main {
         Connection northwindConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/northwind",
                 "root", "yearup"
         );
-        String country = "USA";
-        String query = "SELECT city FROM customers WHERE country = ?";
-        PreparedStatement cityQuery = northwindConnection.prepareStatement(query);
-        cityQuery.setString(1, country);
-        ResultSet cityQueryResults = cityQuery.executeQuery();
+        String query = "SELECT p.ProductID, p.ProductName, p.UnitPrice, p.UnitsInStock " +
+                "FROM Products p";
+        PreparedStatement productQuery = northwindConnection.prepareStatement(query);
+        ResultSet cityQueryResults = productQuery.executeQuery();
 
         while (cityQueryResults.next()) {
-            String city = cityQueryResults.getString("city");
-            System.out.println(city);
+            int productId = cityQueryResults.getInt("ProductID");
+            String productName = cityQueryResults.getString("ProductName");
+            double unitPrice = cityQueryResults.getDouble("UnitPrice");
+            int unitsInStock = cityQueryResults.getInt("UnitsInStock");
+
+            System.out.println("Product ID: " + productId +
+                    "\nProduct Name: " + productName +
+                    "\nUnit Price: " + unitPrice +
+                    "\nUnits In Stock: " + unitsInStock +
+                    "\n------------------------------------------------"
+            );
         }
     }
 
